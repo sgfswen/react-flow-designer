@@ -90,6 +90,7 @@
     "d3-zoom": "1.0.2",
     "invariant": "2.2.1",
     "lodash": "4.16.4",
-    "react-immutable-proptypes": "2.1.0"
+    "react-immutable-proptypes": "2.1.0",
+    "react-draggable": "2.2.2"
   }
 }

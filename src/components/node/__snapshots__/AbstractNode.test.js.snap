@@ -1,0 +1,17 @@
+exports[`Testing <AbstractNode> <AbstractNode /> renders correctly 1`] = `
+<g
+  onClick={[Function]}
+  onClickCapture={[Function]}
+  onMouseDown={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchStart={[Function]}
+  style={
+    Object {
+      "touchAction": "none",
+    }
+  }
+  transform="translate(100,100)">
+  <rect />
+</g>
+`;

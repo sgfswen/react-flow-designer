@@ -1,10 +1,10 @@
-import ReactTestUtils from 'react-addons-test-utils';
 import React from 'react';
+import renderer from 'react-test-renderer';
 import { shallow, mount } from 'enzyme';
 import { Map } from 'immutable';
 
 import { NodeRecord, PositionRecord, SizeRecord } from '../../constants/flowdesigner.model';
-import AbstractNode from './AbstractNode.component.jsx';
+import AbstractNode from './AbstractNode.component';
 
 const node = new NodeRecord({
 	id: 'id',
@@ -15,6 +15,18 @@ const node = new NodeRecord({
 
 
 describe('Testing <AbstractNode>', () => {
+	it('<AbstractNode /> renders correctly', () => {
+		const node = new NodeRecord({
+			id: 'nodeId',
+			position: new PositionRecord({ x: 100, y: 100 }),
+		});
+		const tree = renderer.create(
+			<AbstractNode node={node}>
+				<rect />
+			</AbstractNode>
+		).toJSON();
+		expect(tree).toMatchSnapshot();
+	});
 
 	it('should create a bare node component with provided position', () => {
 		const wrapper = shallow(<AbstractNode node={node}><rect /></AbstractNode>);
