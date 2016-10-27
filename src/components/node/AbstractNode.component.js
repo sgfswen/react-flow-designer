@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { DraggableCore } from 'react-draggable';
 import { Map } from 'immutable';
+import { scaleLinear } from 'd3-scale';
 
 import invariant from 'invariant';
 
@@ -48,43 +49,53 @@ const calculatePortPosition = (ports, nodePosition, nodeSize) => {
 };
 
 
-export const AbstractNode = React.createClass({
-	propTypes: {
+export class AbstractNode extends React.Component {
+	static calculatePortPosition = calculatePortPosition;
+
+	static propTypes = {
 		node: NodeType.isRequired,
 		moveNodeTo: PropTypes.func.isRequired,
-		moveNodeToEnd: PropTypes.func.isRequired,
 		onDragStart: PropTypes.func,
 		onDrag: PropTypes.func,
 		onDragEnd: PropTypes.func,
 		onClick: PropTypes.func,
 		children: PropTypes.node,
-	},
-	statics: { calculatePortPosition },
-	getInitialState() {
-		return {
-			dragged: false,
-		};
-	},
+	};
+
+	constructor(props) {
+		super(props);
+		this.state = { dragged: false };
+		this.onClick = this.onClick.bind(this);
+		this.onClickCapture = this.onClickCapture.bind(this);
+		this.onDragStart = this.onDragStart.bind(this);
+		this.onDrag = this.onDrag.bind(this);
+		this.onDragEnd = this.onDragEnd.bind(this);
+	}
+
 	shouldComponentUpdate(nextProps) {
 		return nextProps !== this.props;
-	},
+	}
+
 	onClick(event) {
 		if (this.props.onClick) {
 			this.props.onClick(event);
 		}
-	},
+	}
+
 	onClickCapture(event) {
 		if (this.state.dragged) {
 			event.preventDefault();
 			event.stopPropagation();
 			this.setState({ dragged: false });
 		}
-	},
+	}
+
 	onDragStart(event, data) {
 		if (this.props.onDragStart) {
 			this.props.onDragStart(event, data);
 		}
-	},
+	}
+
 	onDrag(event, data) {
 		if (!this.state.dragged) {
 			this.setState({ dragged: true });
@@ -97,12 +108,14 @@ export const AbstractNode = React.createClass({
 		if (this.props.onDrag) {
 			this.props.onDrag(event);
 		}
-	},
+	}
+
 	onDragEnd(event, data) {
 		if (this.props.onDragEnd) {
 			this.props.onDragEnd(event, data);
 		}
-	},
+	}
+
 	renderContent() {
 		if (this.props.children) {
 			return this.props.children;
@@ -110,7 +123,8 @@ export const AbstractNode = React.createClass({
 		invariant(false, '<AbstractNode /> should not be used without giving it a children' +
 			'ex: <AbstractNode><rect /></AbstractNode>');
 		return null;
-	},
+	}
+
 	render() {
 		const { node } = this.props;
 		return (
@@ -128,8 +142,8 @@ export const AbstractNode = React.createClass({
 				</g>
 			</DraggableCore>
 		);
-	},
-});
+	}
+}
 
 
 export default AbstractNode;
